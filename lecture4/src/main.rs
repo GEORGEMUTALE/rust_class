@@ -1,10 +1,12 @@
-// use lecture4::{add,div};
 use lecture4::*;
+// use lecture4::{add,div}
 
-fn main(){
-    let addition = add::addition(5,3);
-    println!("sum is {}", addition);
+fn main() {
+    let sum = add::addition(5, 3);  
+    println!("sum is {}", sum);
 
-    let div = div::division(5,3);
-    println!("Division is {}", div);
+    match div::div(5, 3) {     
+        Ok(result) => println!("Division is {}", result),
+        Err(e) => println!("Error: {}", e),
+    }
 }
