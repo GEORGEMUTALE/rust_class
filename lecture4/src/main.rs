@@ -1,5 +1,5 @@
 use lecture4::*;
-// use lecture4::{add,div}
+// use lecture4::{add,div}; //new keyword use
 
 fn main() {
     let sum = add::addition(5, 3);  
