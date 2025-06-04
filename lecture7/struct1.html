@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rust Structs and Enums Examples</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+        }
+        h1, h2 {
+            color: #2c3e50;
+        }
+        .code-container {
+            background-color: #2d2d2d;
+            color: #f8f8f8;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+        pre {
+            margin: 0;
+        }
+        .example {
+            background-color: #e8f4f8;
+            padding: 15px;
+            border-left: 4px solid #3498db;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .note {
+            background-color: #fff8e1;
+            padding: 10px;
+            border-left: 4px solid #ffc107;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        .simple-example {
+            background-color: #f0f7f0;
+            padding: 15px;
+            border-left: 4px solid #4CAF50;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .complex-example {
+            background-color: #f9e8f8;
+            padding: 15px;
+            border-left: 4px solid #9C27B0;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Rust Structs and Enums Examples</h1>
+    
+    <div class="note">
+        <p>Note: These are Rust code examples. To run them, you'll need the Rust compiler installed.</p>
+    </div>
+
+    <h2>Basic Examples</h2>
+    
+    <div class="simple-example">
+        <h3>Simple Struct Example</h3>
+        <div class="code-container">
+            <pre><code>// Define a simple struct
+struct Book {
+    title: String,
+    author: String,
+    pages: u32,
+}
+
+fn main() {
+    // Create an instance of the Book struct
+    let book = Book {
+        title: String::from("The Rust Programming Language"),
+        author: String::from("Steve Klabnik and Carol Nichols"),
+        pages: 519,
+    };
+
+    println!("Book: {} by {} ({} pages)", 
+             book.title, book.author, book.pages);
+}</code></pre>
+        </div>
+    </div>
+
+    <div class="simple-example">
+        <h3>Simple Enum Example</h3>
+        <div class="code-container">
+            <pre><code>// Define a simple enum
+enum Direction {
+    North,
+    South,
+    East,
+    West,
+}
+
+fn main() {
+    // Use the enum
+    let my_direction = Direction::North;
+
+    // Match against enum variants
+    match my_direction {
+        Direction::North => println!("Heading north!"),
+        Direction::South => println!("Heading south!"),
+        Direction::East => println!("Heading east!"),
+        Direction::West => println!("Heading west!"),
+    }
+}</code></pre>
+        </div>
+    </div>
+
+    <h2>Nested Structures</h2>
+    
+    <div class="complex-example">
+        <h3>Struct Containing Another Struct</h3>
+        <div class="code-container">
+            <pre><code>// Define address struct
+struct Address {
+    street: String,
+    city: String,
+    zip_code: String,
+}
+
+// Define person struct containing address
+struct Person {
+    name: String,
+    age: u8,
+    address: Address,  // Struct within struct
+}
+
+fn main() {
+    let person = Person {
+        name: String::from("Alice"),
+        age: 30,
+        address: Address {
+            street: String::from("123 Main St"),
+            city: String::from("Techville"),
+            zip_code: String::from("12345"),
+        },
+    };
+
+    println!("{} lives at {}, {}, {}",
+        person.name,
+        person.address.street,
+        person.address.city,
+        person.address.zip_code);
+}</code></pre>
+        </div>
+    </div>
+
+    <div class="complex-example">
+        <h3>Enum Containing Structs</h3>
+        <div class="code-container">
+            <pre><code>// Define shape structs
+struct Circle {
+    radius: f64,
+}
+
+struct Rectangle {
+    width: f64,
+    height: f64,
+}
+
+// Enum containing different shape structs
+enum Shape {
+    Circle(Circle),
+    Rectangle(Rectangle),
+}
+
+impl Shape {
+    fn area(&self) -> f64 {
+        match self {
+            Shape::Circle(c) => std::f64::consts::PI * c.radius * c.radius,
+            Shape::Rectangle(r) => r.width * r.height,
+        }
+    }
+}
+
+fn main() {
+    let circle = Shape::Circle(Circle { radius: 5.0 });
+    let rectangle = Shape::Rectangle(Rectangle { width: 4.0, height: 6.0 });
+
+    println!("Circle area: {:.2}", circle.area());
+    println!("Rectangle area: {:.2}", rectangle.area());
+}</code></pre>
+        </div>
+    </div>
+
+    <div class="complex-example">
+        <h3>Struct Containing Enum</h3>
+        <div class="code-container">
+            <pre><code>// Define account status enum
+enum AccountStatus {
+    Active,
+    Inactive,
+    Suspended,
+    Banned,
+}
+
+// Define user struct containing enum
+struct User {
+    username: String,
+    email: String,
+    status: AccountStatus,
+}
+
+fn print_user_status(user: &User) {
+    match user.status {
+        AccountStatus::Active => println!("{} is active", user.username),
+        AccountStatus::Inactive => println!("{} is inactive", user.username),
+        AccountStatus::Suspended => println!("{} is suspended", user.username),
+        AccountStatus::Banned => println!("{} is banned", user.username),
+    }
+}
+
+fn main() {
+    let user1 = User {
+        username: String::from("alice123"),
+        email: String::from("alice@example.com"),
+        status: AccountStatus::Active,
+    };
+
+    let user2 = User {
+        username: String::from("bob456"),
+        email: String::from("bob@example.com"),
+        status: AccountStatus::Suspended,
+    };
+
+    print_user_status(&user1);
+    print_user_status(&user2);
+}</code></pre>
+        </div>
+    </div>
+
+    <!-- Previous comprehensive examples would go here -->
+    
+    <div class="note">
+        <h3>Key Points to Remember</h3>
+        <ul>
+            <li><strong>Structs</strong> can contain other structs as fields</li>
+            <li><strong>Enums</strong> can contain structs as variant data</li>
+            <li><strong>Structs</strong> can contain enums as fields</li>
+            <li>These combinations allow for modeling complex data relationships</li>
+            <li>Match expressions work well with nested enums and structs</li>
+        </ul>
+    </div>
+</body>
+</html>

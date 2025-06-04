@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rust Concepts: Traits, Methods, and Structs</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+        code {
+            background-color: #f5f5f5;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        pre {
+            background-color: #282c34;
+            color: #abb2bf;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            tab-size: 4;
+        }
+        .note {
+            background-color: #e7f5fe;
+            border-left: 4px solid #4dabf7;
+            padding: 10px;
+            margin: 15px 0;
+        }
+        .warning {
+            background-color: #fff3bf;
+            border-left: 4px solid #ffd43b;
+            padding: 10px;
+            margin: 15px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .keyword {
+            color: #c678dd;
+        }
+        .type {
+            color: #e5c07b;
+        }
+        .fn {
+            color: #61afef;
+        }
+        .string {
+            color: #98c379;
+        }
+    </style>
+</head>
+<body>
+    <h1>Comprehensive Rust: Traits, Methods, and Structs</h1>
+    
+    <section>
+        <h2>Structs in Rust</h2>
+        <p>A <strong>struct</strong> is a custom data type that packages together multiple related values.</p>
+        
+        <pre><code><span class="keyword">struct</span> <span class="type">Rectangle</span> {
+    width: <span class="type">u32</span>,
+    height: <span class="type">u32</span>,
+    name: <span class="type">String</span>,
+}</code></pre>
+    </section>
+    
+    <section>
+        <h2>Methods in Rust</h2>
+        <p>Methods are functions associated with a type, defined in <code>impl</code> blocks.</p>
+        
+        <h3>Three Types of Methods:</h3>
+        
+        <pre><code><span class="keyword">impl</span> <span class="type">Rectangle</span> {
+    <span class="comment">// 1. Associated function (no self parameter)</span>
+    <span class="keyword">fn</span> <span class="fn">new</span>(width: <span class="type">u32</span>, height: <span class="type">u32</span>, name: <span class="type">&str</span>) -> <span class="type">Self</span> {
+        <span class="type">Self</span> {
+            width,
+            height,
+            name: <span class="type">String</span>::from(name),
+        }
+    }
+    
+    <span class="comment">// 2. Immutable method (&self)</span>
+    <span class="keyword">fn</span> <span class="fn">area</span>(&<span class="keyword">self</span>) -> <span class="type">u32</span> {
+        <span class="keyword">self</span>.width * <span class="keyword">self</span>.height
+    }
+    
+    <span class="comment">// 3. Mutable method (&mut self)</span>
+    <span class="keyword">fn</span> <span class="fn">resize</span>(&<span class="keyword">mut self</span>, new_width: <span class="type">u32</span>, new_height: <span class="type">u32</span>) {
+        <span class="keyword">self</span>.width = new_width;
+        <span class="keyword">self</span>.height = new_height;
+    }
+    
+    <span class="comment">// Method consuming self (self)</span>
+    <span class="keyword">fn</span> <span class="fn">consume</span>(<span class="keyword">self</span>) -> <span class="type">String</span> {
+        <span class="string">format!</span>(<span class="string">"Consumed rectangle: {}"</span>, <span class="keyword">self</span>.name)
+    }
+}</code></pre>
+        
+        <div class="note">
+            <p><strong>Method Types Explained:</strong></p>
+            <ul>
+                <li><code>&self</code>: Borrows the instance immutably (read-only)</li>
+                <li><code>&mut self</code>: Borrows the instance mutably (can modify)</li>
+                <li><code>self</code>: Takes ownership of the instance (consumes it)</li>
+            </ul>
+        </div>
+    </section>
+    
+    <section>
+        <h2>Traits in Rust</h2>
+        <p>Traits define shared behavior that can be implemented by multiple types.</p>
+        
+        <h3>Basic Trait with Default Implementation</h3>
+        <pre><code><span class="keyword">trait</span> <span class="type">Summary</span> {
+    <span class="comment">// Required method</span>
+    <span class="keyword">fn</span> <span class="fn">summarize</span>(&<span class="keyword">self</span>) -> <span class="type">String</span>;
+    
+    <span class="comment">// Method with default implementation</span>
+    <span class="keyword">fn</span> <span class="fn">brief</span>(&<span class="keyword">self</span>) -> <span class="type">String</span> {
+        <span class="type">String</span>::from(<span class="string">"(Read more...)"</span>)
+    }
+}</code></pre>
+        
+        <h3>Trait with &mut self Method</h3>
+        <pre><code><span class="keyword">trait</span> <span class="type">Resizable</span> {
+    <span class="keyword">fn</span> <span class="fn">scale</span>(&<span class="keyword">mut self</span>, factor: <span class="type">f64</span>);
+    <span class="keyword">fn</span> <span class="fn">double_size</span>(&<span class="keyword">mut self</span>) {
+        <span class="keyword">self</span>.scale(<span class="number">2.0</span>);
+    }
+}</code></pre>
+        
+        <h3>Trait with Associated Type</h3>
+        <pre><code><span class="keyword">trait</span> <span class="type">Shape</span> {
+    <span class="keyword">type</span> <span class="type">AreaType</span>;
+    
+    <span class="keyword">fn</span> <span class="fn">area</span>(&<span class="keyword">self</span>) -> <span class="type">Self::AreaType</span>;
+    <span class="keyword">fn</span> <span class="fn">description</span>(&<span class="keyword">self</span>) -> <span class="type">String</span>;
+}</code></pre>
+    </section>
+    
+    <section>
+        <h2>Trait Implementations</h2>
+        
+        <h3>Implementing Summary for Rectangle</h3>
+        <pre><code><span class="keyword">impl</span> <span class="type">Summary</span> <span class="keyword">for</span> <span class="type">Rectangle</span> {
+    <span class="keyword">fn</span> <span class="fn">summarize</span>(&<span class="keyword">self</span>) -> <span class="type">String</span> {
+        <span class="string">format!</span>(<span class="string">"Rectangle '{}' ({}x{}), area: {}"</span>, 
+            <span class="keyword">self</span>.name, <span class="keyword">self</span>.width, <span class="keyword">self</span>.height, <span class="keyword">self</span>.area())
+    }
+}</code></pre>
+        
+        <h3>Implementing Resizable for Rectangle</h3>
+        <pre><code><span class="keyword">impl</span> <span class="type">Resizable</span> <span class="keyword">for</span> <span class="type">Rectangle</span> {
+    <span class="keyword">fn</span> <span class="fn">scale</span>(&<span class="keyword">mut self</span>, factor: <span class="type">f64</span>) {
+        <span class="keyword">self</span>.width = (<span class="keyword">self</span>.width <span class="keyword">as</span> <span class="type">f64</span> * factor) <span class="keyword">as</span> <span class="type">u32</span>;
+        <span class="keyword">self</span>.height = (<span class="keyword">self</span>.height <span class="keyword">as</span> <span class="type">f64</span> * factor) <span class="keyword">as</span> <span class="type">u32</span>;
+    }
+}</code></pre>
+        
+        <h3>Implementing Shape for Rectangle</h3>
+        <pre><code><span class="keyword">impl</span> <span class="type">Shape</span> <span class="keyword">for</span> <span class="type">Rectangle</span> {
+    <span class="keyword">type</span> <span class="type">AreaType</span> = <span class="type">u32</span>;
+    
+    <span class="keyword">fn</span> <span class="fn">area</span>(&<span class="keyword">self</span>) -> <span class="type">Self::AreaType</span> {
+        <span class="keyword">self</span>.width * <span class="keyword">self</span>.height
+    }
+    
+    <span class="keyword">fn</span> <span class="fn">description</span>(&<span class="keyword">self</span>) -> <span class="type">String</span> {
+        <span class="keyword">self</span>.summarize()
+    }
+}</code></pre>
+    </section>
+    
+    <section>
+        <h2>Complete Example with Usage</h2>
+        
+        <pre><code><span class="keyword">fn</span> <span class="fn">main</span>() {
+    <span class="comment">// Create a mutable Rectangle</span>
+    <span class="keyword">let mut</span> rect = <span class="type">Rectangle</span>::new(<span class="number">30</span>, <span class="number">50</span>, <span class="string">"My Rectangle"</span>);
+    
+    <span class="comment">// Call immutable method</span>
+    println!(<span class="string">"Initial area: {}"</span>, rect.area());
+    
+    <span class="comment">// Call trait method (Summary)</span>
+    println!(<span class="string">"{}"</span>, rect.summarize());
+    
+    <span class="comment">// Call mutable method</span>
+    rect.resize(<span class="number">40</span>, <span class="number">60</span>);
+    println!(<span class="string">"After resize: {}"</span>, rect.summarize());
+    
+    <span class="comment">// Call trait method with &mut self (Resizable)</span>
+    rect.scale(<span class="number">1.5</span>);
+    println!(<span class="string">"After scaling: {}"</span>, rect.summarize());
+    
+    <span class="comment">// Call default trait method</span>
+    println!(<span class="string">"Brief: {}"</span>, rect.brief());
+    
+    <span class="comment">// Call method that consumes self</span>
+    <span class="keyword">let</span> message = rect.consume();
+    println!(<span class="string">"{}"</span>, message);
+    
+    <span class="comment">// rect can no longer be used here as it was consumed</span>
+}</code></pre>
+        
+        <div class="note">
+            <p><strong>Expected Output:</strong></p>
+            <pre>Initial area: 1500
+Rectangle 'My Rectangle' (30x50), area: 1500
+After resize: Rectangle 'My Rectangle' (40x60), area: 2400
+After scaling: Rectangle 'My Rectangle' (60x90), area: 5400
+Brief: (Read more...)
+Consumed rectangle: My Rectangle</pre>
+        </div>
+    </section>
+    
+    <section>
+        <h2>Key Differences</h2>
+        
+        <table>
+            <tr>
+                <th>Concept</th>
+                <th>Purpose</th>
+                <th>Key Features</th>
+            </tr>
+            <tr>
+                <td><strong>Struct</strong></td>
+                <td>Data organization</td>
+                <td>Contains fields, no behavior, can implement multiple traits</td>
+            </tr>
+            <tr>
+                <td><strong>Method</strong></td>
+                <td>Type-specific behavior</td>
+                <td>Defined in impl blocks, can be immutable/mutable/consuming</td>
+            </tr>
+            <tr>
+                <td><strong>Trait</strong></td>
+                <td>Shared behavior</td>
+                <td>Defines interface, can have default implementations, enables polymorphism</td>
+            </tr>
+        </table>
+        
+        <div class="warning">
+            <p><strong>Important Notes:</strong></p>
+            <ul>
+                <li>Traits can't contain data fields (only structs/enums can)</li>
+                <li>Methods with <code>&mut self</code> require mutable instances</li>
+                <li>Traits must be in scope to use their methods</li>
+                <li>You can implement your traits for any type, including standard library types</li>
+            </ul>
+        </div>
+    </section>
+</body>
+</html>

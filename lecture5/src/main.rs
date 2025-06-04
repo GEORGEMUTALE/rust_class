@@ -1,31 +1,25 @@
-#[derive(PartialEq, Clone)]
+// Define a simple enum
+#![allow(dead_code)]
 enum Direction {
     North,
     South,
     East,
     West,
 }
-
-// enum TrafficLight {
-//     Red,
-//     Amber,
-//     Green,
-// }
-
-// enum Result {
-//     Ok,
-//     Err,
-// }
-fn move_player(dir: Direction){
-     match dir {
-        Direction::North => println!("Moved to North"),
-        Direction::South=> println!("Moved to South"),
-        Direction::East => println!("Moved to East"),
-        Direction::West => println!("Moved to West"),
-     }
+fn print_direction(dir: Direction){
+match dir {
+        Direction::North => println!("Heading north!"),
+        Direction::South => println!("Heading south!"),
+        Direction::East => println!("Heading east!"),
+        Direction::West => println!("Heading west!"),
+    }
 }
 
+
 fn main() {
-    let dir = Direction::West;
-    move_player(dir);
+    // Use the enum
+    let my_direction = Direction::North;
+
+    print_direction(my_direction);
+    
 }

@@ -1,0 +1,55 @@
+<div class="rust-examples">
+    <h2>Basic Struct and Enum Examples</h2>
+    
+    <div class="example">
+        <h3>Simple Struct Example</h3>
+        <div class="code-container">
+            <pre><code>// Define a simple struct
+struct Book {
+    title: String,
+    author: String,
+    pages: u32,
+}
+
+fn main() {
+    // Create an instance of the Book struct
+    let book = Book {
+        title: String::from("The Rust Programming Language"),
+        author: String::from("Steve Klabnik and Carol Nichols"),
+        pages: 519,
+    };
+
+    println!("Book: {} by {} ({} pages)", 
+             book.title, book.author, book.pages);
+}</code></pre>
+        </div>
+        <p>This creates a <code>Book</code> struct with three fields and shows how to instantiate it.</p>
+    </div>
+
+    <div class="example">
+        <h3>Simple Enum Example</h3>
+        <div class="code-container">
+            <pre><code>// Define a simple enum
+enum Direction {
+    North,
+    South,
+    East,
+    West,
+}
+
+fn main() {
+    // Use the enum
+    let my_direction = Direction::North;
+
+    // Match against enum variants
+    match my_direction {
+        Direction::North => println!("Heading north!"),
+        Direction::South => println!("Heading south!"),
+        Direction::East => println!("Heading east!"),
+        Direction::West => println!("Heading west!"),
+    }
+}</code></pre>
+        </div>
+        <p>This creates a <code>Direction</code> enum with four variants and shows basic pattern matching.</p>
+    </div>
+</div>
