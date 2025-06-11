@@ -1,5 +1,5 @@
 // Define a simple enum
-#![allow(dead_code)]
+#![allow(dead_code)] 
 enum Direction {
     North,
     South,
